@@ -5,6 +5,9 @@ import string
 import sqlite3
 import os
 from datetime import datetime
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "detection_history.db")
 app = Flask(__name__)
