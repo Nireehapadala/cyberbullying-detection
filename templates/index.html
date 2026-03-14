@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toxic Comment Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="nav-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>ToxicGuard</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analyze" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>Analyze</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#features" class="nav-link">
+                            <i class="fas fa-star"></i>
+                            <span>Features</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#categories" class="nav-link">
+                            <i class="fas fa-list"></i>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#history" class="nav-link">
+                            <i class="fas fa-history"></i>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="nav-btn theme-toggle" id="themeToggle" title="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="nav-btn mobile-menu-toggle" id="mobileMenuToggle" title="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header" id="home">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Toxic Comment Detection</h1>
+                        <p class="tagline">AI-powered protection for online communities</p>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">99.5%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4K+</span>
+                        <span class="stat-label">Samples</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Detection Section -->
+            <section class="detection-section" id="analyze">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-microscope"></i>
+                        Message Analysis
+                    </h2>
+                    <p>Enter a message to detect toxic content in real-time</p>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <div class="input-header">
+                            <i class="fas fa-comment-medical"></i>
+                            <h3>Enter Your Message</h3>
+                            <div class="input-actions">
+                                <button class="action-btn clear-btn" id="clearBtn" title="Clear text">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                                <button class="action-btn paste-btn" id="pasteBtn" title="Paste from clipboard">
+                                    <i class="fas fa-paste"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="textarea-wrapper">
+                            <textarea 
+                                id="messageInput" 
+                                placeholder="Type or paste a message here to analyze for toxic content..."
+                                rows="4"
+                                maxlength="500"
+                            ></textarea>
+                            <div class="char-count">
+                                <span id="charCount">0</span>
+                                <span class="divider">/</span>
+                                <span>500</span>
+                                <div class="char-progress">
+                                    <div class="progress-bar" id="charProgress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="detectBtn" class="detect-btn primary">
+                            <i class="fas fa-search"></i>
+                            <span>Analyze Message</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button id="randomBtn" class="detect-btn secondary">
+                            <i class="fas fa-random"></i>
+                            <span>Random Test</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingSpinner" class="loading-state hidden">
+                    <div class="loading-content">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <div class="pulse-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <p class="loading-text">Analyzing message with AI...</p>
+                        <div class="loading-steps">
+                            <div class="step active">
+                                <i class="fas fa-brain"></i>
+                                <span>Processing</span>
+                            </div>
+                            <div class="step">
+                                <i class="fas fa-search"></i>
+                                <span>Analyzing</span>
+                            </div>
+                            <div class="step">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="resultContainer" class="result-container hidden">
+                    <div class="result-header" id="resultHeader">
+                        <div class="result-icon">
+                            <i id="resultIcon" class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="result-title">
+                            <h3 id="resultTitle">Analysis Complete</h3>
+                            <p id="resultSubtitle">Message has been analyzed</p>
+                        </div>
+                        <div class="result-actions">
+                            <button class="action-btn share-btn" id="shareBtn" title="Share result">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <button class="action-btn copy-btn" id="copyBtn" title="Copy result">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="result-content">
+                        <div class="message-preview">
+                            <div class="message-header">
+                                <i class="fas fa-comment-alt"></i>
+                                <h4>Analyzed Message</h4>
+                            </div>
+                            <div class="message-text">
+                                <p id="analyzedText"></p>
+                            </div>
+                        </div>
+
+                        <div class="analysis-details">
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h4>Classification</h4>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="classification-result" id="classification">
+                                        <span class="result-label">Safe Message</span>
+                                        <div class="confidence-meter">
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" id="confidenceFill"></div>
+                                            </div>
+                                            <span class="confidence-text" id="confidenceText">95%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <h4>Confidence Score</h4>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="confidence-display">
+                                        <div class="circular-progress">
+                                            <svg class="progress-ring" width="120" height="120">
+                                                <circle class="progress-ring-circle" 
+                                                        stroke="#e0e0e0" 
+                                                        stroke-width="8" 
+                                                        fill="transparent" 
+                                                        r="52" 
+                                                        cx="60" 
+                                                        cy="60"/>
+                                                <circle class="progress-ring-circle progress-ring-fill" 
+                                                        id="progressCircle"
+                                                        stroke="#4CAF50" 
+                                                        stroke-width="8" 
+                                                        fill="transparent" 
+                                                        r="52" 
+                                                        cx="60" 
+                                                        cy="60"/>
+                                            </svg>
+                                            <div class="progress-text">
+                                                <span id="confidencePercent">95</span>
+                                                <small>%</small>
+                                            </div>
+                                        </div>
+                                        <div class="confidence-labels">
+                                            <span class="label low">Low</span>
+                                            <span class="label medium">Medium</span>
+                                            <span class="label high">High</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="warningMessage" class="warning-message hidden">
+                            <div class="warning-content">
+                                <div class="warning-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="warning-text">
+                                    <h4>⚠️ Warning Detected</h4>
+                                    <p>This message contains harmful content that may be considered toxic or abusive.</p>
+                                    <div class="warning-suggestions">
+                                        <h5>Suggestions:</h5>
+                                        <ul>
+                                            <li>Consider rephrasing your message</li>
+                                            <li>Think about the impact on others</li>
+                                            <li>Report harmful content if encountered</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section" id="features">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-star"></i>
+                        System Features
+                    </h2>
+                    <p>Advanced AI-powered content analysis</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Machine Learning</h3>
+                            <p>Powered by advanced Logistic Regression with 99.5% accuracy</p>
+                            <div class="feature-stats">
+                                <span class="stat">99.5% Accuracy</span>
+                                <span class="stat">4K+ Training Samples</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Real-time Analysis</h3>
+                            <p>Instant detection with detailed confidence scores and classification</p>
+                            <div class="feature-stats">
+                                <span class="stat">< 1 Second</span>
+                                <span class="stat">Live Results</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Comprehensive Protection</h3>
+                            <p>Detects racism, sexism, body shaming, mental health insults, and more</p>
+                            <div class="feature-stats">
+                                <span class="stat">7+ Categories</span>
+                                <span class="stat">All Toxic Types</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Privacy & Security</h3>
+                            <p>Your messages are processed locally and securely with no data storage</p>
+                            <div class="feature-stats">
+                                <span class="stat">Local Processing</span>
+                                <span class="stat">No Data Storage</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="stats-section" id="categories">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-chart-bar"></i>
+                        Detection Categories
+                    </h2>
+                    <p>Types of toxic content our system detects</p>
+                </div>
+
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <h4>Racial Slurs</h4>
+                        <p>Detects racist language and discrimination</p>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-venus"></i>
+                        </div>
+                        <h4>Sexual Insults</h4>
+                        <p>Identifies gender-based harassment</p>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <h4>Body Shaming</h4>
+                        <p>Detects appearance-based bullying</p>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>Mental Health</h4>
+                        <p>Catches mental health insults</p>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-bomb"></i>
+                        </div>
+                        <h4>Threats</h4>
+                        <p>Identifies threatening language</p>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-comment-slash"></i>
+                        </div>
+                        <h4>General Insults</h4>
+                        <p>Detects common abusive language</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section" id="history">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-history"></i>
+                        Detection History
+                    </h2>
+                    <p>View and manage your detection history</p>
+                </div>
+
+                <div class="history-content">
+                    <div class="history-controls">
+                        <div class="control-buttons">
+                            <button class="btn btn-primary" id="refreshHistory">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                            <button class="btn btn-danger" id="clearHistory">
+                                <i class="fas fa-trash"></i>
+                                Clear All
+                            </button>
+                        </div>
+                        <div class="history-stats">
+                            <div class="stat-badge">
+                                <span class="stat-number" id="totalHistory">0</span>
+                                <span class="stat-label">Total Detections</span>
+                            </div>
+                            <div class="stat-badge safe">
+                                <span class="stat-number" id="safeHistory">0</span>
+                                <span class="stat-label">Safe Messages</span>
+                            </div>
+                            <div class="stat-badge toxic">
+                                <span class="stat-number" id="toxicHistory">0</span>
+                                <span class="stat-label">Toxic Messages</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-table-container">
+                        <div class="loading-spinner" id="historyLoading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading history...</span>
+                        </div>
+                        
+                        <div class="history-table" id="historyTable">
+                            <div class="table-header">
+                                <div class="header-cell">Time</div>
+                                <div class="header-cell">Message</div>
+                                <div class="header-cell">Result</div>
+                                <div class="header-cell">Confidence</div>
+                                <div class="header-cell">Actions</div>
+                            </div>
+                            <div class="table-body" id="historyBody">
+                                <!-- History items will be inserted here -->
+                            </div>
+                        </div>
+
+                        <div class="empty-history" id="emptyHistory" style="display: none;">
+                            <div class="empty-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3>No Detection History</h3>
+                            <p>Start analyzing messages to see your detection history here.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about-section" id="about">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-info-circle"></i>
+                        About ToxicGuard
+                    </h2>
+                    <p>Learn more about our mission and technology</p>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-grid">
+                        <div class="about-card">
+                            <div class="about-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3>Our Mission</h3>
+                            <p>To create safer online communities by providing real-time, accurate detection of toxic content using advanced AI technology.</p>
+                        </div>
+
+                        <div class="about-card">
+                            <div class="about-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>Technology</h3>
+                            <p>Powered by advanced machine learning algorithms trained on thousands of samples to achieve 99.5% accuracy in toxic content detection.</p>
+                        </div>
+
+                        <div class="about-card">
+                            <div class="about-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Privacy First</h3>
+                            <p>Your messages are processed locally and securely. We don't store any of your data, ensuring complete privacy and confidentiality.</p>
+                        </div>
+
+                        <div class="about-card">
+                            <div class="about-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Community Impact</h3>
+                            <p>Helping platforms, moderators, and users create healthier online environments by identifying and addressing harmful content.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">99.5%</div>
+                            <div class="stat-label">Accuracy Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">8K+</div>
+                            <div class="stat-label">Training Samples</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">7+</div>
+                            <div class="stat-label">Detection Categories</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">< 1s</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2026 Toxic Comment Detection System</p>
+                    <p>Built with ❤️ for safer online communities</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-info-circle"></i>
+                        About
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
