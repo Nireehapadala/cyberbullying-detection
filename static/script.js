@@ -722,7 +722,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return icons[type] || icons.info;
     }
     
-    // Add some interactive effects
+    // Add some interactive effects - DISABLED FOR MOBILE
+    /*
     document.addEventListener('mousemove', (e) => {
         const shapes = document.querySelectorAll('.shape');
         const x = e.clientX / window.innerWidth;
@@ -736,6 +737,9 @@ document.addEventListener('DOMContentLoaded', function() {
             shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
         });
     });
+    */
+    
+    console.log('🖱️ Mousemove effects DISABLED for mobile compatibility');
     
     // Add keyboard navigation
     document.addEventListener('keydown', (e) => {
@@ -758,13 +762,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Add touch support for mobile - FIXED VERSION
+    // Add touch support for mobile - DISABLED TO FIX POPUP ISSUE
+    // Temporarily disable all touch gestures to prevent popup spam
     let touchStartY = 0;
     let touchEndY = 0;
     let touchStartTime = 0;
     let touchEndTime = 0;
     let isSwipeGesture = false;
     
+    // DISABLED: Touch event handlers causing popup issues
+    /*
     document.addEventListener('touchstart', (e) => {
         // Only track touches on the main content area, not on buttons or inputs
         if (e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea')) {
@@ -817,6 +824,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+    */
+    
+    // Add mobile-specific debug info
+    console.log('📱 Mobile touch gestures DISABLED to prevent popup spam');
+    console.log('🎯 Use buttons instead of swipe gestures on mobile');
     
     // Performance optimization - debounce resize events
     let resizeTimeout;
